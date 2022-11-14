@@ -1,0 +1,315 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Animated,
+} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import Andata from "../components/Andata/Andata";
+import { paypal, ball, youtube, amazon } from "../assets/images";
+import { getSize } from "../utils/helper";
+import { PanGestureHandler } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome5";
+
+const { width, height } = getSize();
+
+const Analyze = ({}) => {
+  const listData = [
+    {
+      name: "Dribble",
+      date: "13 yan 22",
+      valyuta: "1",
+      price: "102.24",
+      time: "3:24 Pm",
+      image: ball,
+    },
+    {
+      name: "Amazon",
+      date: "24 yan 22",
+      valyuta: "1",
+      price: "45.24",
+      time: "2:24 Pm",
+      image: amazon,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+    {
+      name: "Youtube",
+      date: "20 yan 22",
+      valyuta: "1",
+      price: "120.24",
+      time: "1:13 Pm",
+      image: youtube,
+    },
+    {
+      name: "Paypal",
+      date: "4 yan 22",
+      valyuta: "1",
+      price: "20.24",
+      time: "6:13 Pm",
+      image: paypal,
+    },
+  ];
+
+  const animationHeight = useRef(new Animated.Value(150)).current;
+  const [scrolling, setScrolling] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const setAnimatedHeight = (height) => {
+    Animated.timing(animationHeight, {
+      toValue: height,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+    setScrolling(height === 150 ? false : true);
+  };
+
+  useEffect(() => {
+    if (selected !== null) {
+      navigation.navigate("AllCard", {
+        cardData: data.find((card) => card.id === selected),
+      });
+      setSelected(null);
+    }
+  }, [selected]);
+
+  const swiping = (event) => {
+    const { nativeEvent } = event || {};
+    const { velocityY } = nativeEvent || {};
+    const height = animationHeight.__getValue();
+    if (velocityY < 0 && height == 150) {
+      // setListPosition(Math.abs(y) + ListPosition);
+      setAnimatedHeight(450);
+    } else if (velocityY > 0 && height == 450) {
+      setAnimatedHeight(150);
+      // setListPosition(ListPosition - (y - 200));
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000040" }}>
+      <View style={{ paddingHorizontal: 30 }}>
+        <Andata />
+
+        <View style={styles.totalBox}>
+          <Text style={styles.total}>Total Balans</Text>
+          <Text style={styles.balance}>1.924,35 ₼</Text>
+        </View>
+        {/* <View style={styles.viewBox}>
+          <Text style={styles.transac}>Əməliyyat</Text>
+          <TouchableOpacity>
+            <Text style={styles.viewAll}>Hamısına baxın</Text>
+          </TouchableOpacity>
+        </View> */}
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          // width: width <= 375 ? 375 : 390,
+          // bottom: width <= 375 ? -230 :-330,
+          width: "100%",
+
+          bottom: 0,
+        }}
+      >
+        <PanGestureHandler onGestureEvent={swiping}>
+          <Animated.View style={{ height: animationHeight }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={scrolling}
+              style={{
+                paddingHorizontal: 30,
+                width: "100%",
+                backgroundColor: "#6930c3",
+                borderTopLeftRadius: "30%",
+                borderTopRightRadius: "30%",
+                height: "100%",
+              }}
+              scrollEventThrottle={16}
+              onScroll={(e) => {
+                if (e.nativeEvent.contentOffset.y <= 0) {
+                  setAnimatedHeight(150);
+                }
+              }}
+            >
+              {listData.map((item, index) => (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: 20,
+                  }}
+                  key={index}
+                >
+                  <View style={styles.dribContainer}>
+                    <View style={styles.ballBox}>
+                      <Image
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          resizeMode: "contain",
+                        }}
+                        source={item.image}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.drible}>{item.name}</Text>
+                      <Text style={styles.dribleDate}>{item.date}</Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text style={styles.drible}>-₼{item.price}</Text>
+                    <Text style={styles.dribleSecond}>{item.time}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </Animated.View>
+        </PanGestureHandler>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default Analyze;
+
+const styles = StyleSheet.create({
+  total: {
+    color: "#B9B2C4",
+    fontSize: 16,
+    fontWeight: "400",
+    marginBottom: 8,
+  },
+  balance: {
+    fontSize: 32,
+    fontWeight: "500",
+    color: "white",
+  },
+  totalBox: {
+    alignItems: "center",
+  },
+  viewBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 36,
+  },
+  transac: {
+    fontSize: width <= 375 ? 17 : 20,
+    fontWeight: "600",
+    color: "white",
+  },
+  viewAll: {
+    color: "#B9B2C4",
+    fontSize: 16,
+    fontWeight: "400",
+  },
+  ballBox: {
+    width: width <= 375 ? 50 : 55,
+    height: width <= 375 ? 50 : 55,
+  },
+  drible: {
+    color: "white",
+    fontSize: width <= 375 ? 16 : 18,
+    fontWeight: "500",
+    marginBottom: 4,
+  },
+  dribleDate: {
+    fontSize: 16,
+    fontWeight: "400",
+    color: "#B9B2C4",
+  },
+  dribContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: width <= 375 ? 130 : 135,
+  },
+  dribleSecond: {
+    fontSize: 16,
+    fontWeight: "400",
+    color: "#B9B2C4",
+    textAlign: "right",
+  },
+});
