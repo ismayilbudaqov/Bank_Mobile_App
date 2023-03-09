@@ -2,23 +2,41 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import Avatar from "../../assets/images/Avatar.png";
 import { getSize } from "../../utils/helper";
+import { useAuth } from "../../provider/AuthProvider";
 
-const header = [
-  {
-    welcome: "Salam",
-    name: "Orxan Memedov",
-    avatar: Avatar,
-    bank_card: "Bank Cards",
-  },
-];
 const { width, height } = getSize();
-const Header = () => {
+
+const Header = ({ position = true }) => {
+  const { state } = useAuth();
+
+  const header = [
+    {
+      transformCard: "Bütün Kartlar",
+      welcome: "Salam",
+      name: state.user.displayName,
+      avatar: Avatar,
+      bank_card: "Bank Cards",
+    },
+  ];
   return (
     <View>
       {header.map((item, index) => (
         <View style={styles.header} key={index}>
-          <View>
-            <Text style={styles.hello}>{item.welcome}</Text>
+          <View style={styles.headerRide}>
+            {position ? (
+              <Text style={styles.hello}>{item.welcome} 🥳</Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: width <= 375 ? 25 : 25,
+                  color: "black",
+                  fontWeight: "700",
+                }}
+              >
+                {item.transformCard} 🤑
+              </Text>
+            )}
+
             <Text style={styles.burning}>{item.name}</Text>
           </View>
 
@@ -38,21 +56,28 @@ export default Header;
 
 const styles = StyleSheet.create({
   hello: {
-    fontSize: width <= 375 ? 25 : 30,
-    color: "white",
+    fontSize: 25,
+    color: "black",
     fontWeight: "700",
   },
   burning: {
     fontSize: 16,
-    color: "#B9B2C4",
+    color: "black",
   },
   avatar: {
-    width: width <= 375 ? 50 : 60,
-    height: 60,
+    width: 50,
+    height: 50,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 100,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 20,
+    marginTop: width <= 375 ? 0 : 55,
+  },
+  headerRide: {
+    justifyContent: "center",
   },
 });

@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  Animated,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import Nfc from "../../assets/icons/nfc.png";
 import Master from "../../assets/icons/mastercard.png";
@@ -15,7 +16,7 @@ import { getSize } from "../../utils/helper";
 const card = [
   {
     id: 2,
-    balance: "1.992.34",
+    balance: "2.992.34",
     nfc: Nfc,
     bankSections: Master,
     cardNumber: "5489 7654 3210 7894",
@@ -45,29 +46,33 @@ const Card = ({
   userId,
   position = true,
 }) => {
-  const [openModal, setOpenModal] = useState(true);
-  console.log(openModal)
+  const animation = useRef(new Animated.Value(1)).current;
+
+  const toggleCVC = () => {
+    Animated.timing(animation, {
+      toValue: animation._value == 0 ? 1 : 0,
+      duration: 1000,
+    }).start();
+  };
 
   return (
-    <LinearGradient
-      colors={["#181842", "#9a2885", "#5325ab"]}
+    <View
+      // colors={[]}
       style={
         isOtherPage
           ? {
-              width: width <= 375 ? 300 : 320,
-              height: height <= 667 ? 450 : 500,
-              marginRight: 39,
-              borderRadius: 40,
-              borderWidth: 1,
-              borderColor: "white",
+              width: width <= 375 ? 300 : 300,
+              height: height <= 667 ? 450 : 450,
+              marginRight: 25,
+              borderRadius: 25,
+              backgroundColor: "#181842",
             }
           : {
-              width: width <= 375 ? 360 : 370,
-              height: height <= 667 ? 225 : 250,
-              borderRadius: 40,
+              width: width <= 375 ? 360 : 360,
+              height: height <= 667 ? 225 : 225,
+              borderRadius: 25,
               marginLeft: 10,
-              borderWidth: 1,
-              borderColor: "white",
+              backgroundColor: "#181842",
             }
       }
     >
@@ -119,7 +124,7 @@ const Card = ({
                   transform: [{ rotate: "-90deg" }],
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  top: 180,
+                  top: width <= 376 ? 165 : 165,
                   left: 50,
                   position: "absolute",
                   width: width <= 376 ? 350 : 400,
@@ -134,50 +139,72 @@ const Card = ({
           {position === false && (
             <View
               style={{
-                backgroundColor: "purple",
+                backgroundColor: "#f0eff4",
                 borderRadius: 10,
                 width: "100%",
                 justifyContent: "center",
                 paddingHorizontal: 15,
               }}
             >
-              <TouchableOpacity
-                onPress={() => setOpenModal(false)}
+              <Animated.View
+                style={[
+                  styles.fadingContainer,
+                  {
+                    opacity: animation,
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  onPress={toggleCVC}
+                  style={
+                    {
+                      // width: "100%",
+                      // height: "100%",
+                      // backgroundColor: "red",
+                    }
+                  }
+                >
+                  <Text
+                    style={{
+                      fontSize: 30,
+                      transform: [{ rotate: "90deg" }],
+                      textAlign: "center",
+                    }}
+                  >
+                    👀
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View>
+              <View
                 style={{
                   width: "20%",
-                  height: "60%",
-                  borderRadius: "10%",
-                  backgroundColor: "black",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  height: "70%",
+                  // position: "relative",
                 }}
               >
-                {!openModal ? (
-                  <View style={{ position: "absolute" }}>
-                    <View
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: "10%",
-                        backgroundColor: "white",
-                        position: "absolute",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 16,
-                          fontWeight: "500",
-                        }}
-                      >
-                        {data.secure}
-                      </Text>
-                    </View>
-                  </View>
-                ) : (
-                  console.log("salam")
-                )}
-              </TouchableOpacity>
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: 10,
+                    backgroundColor: "white",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "relative",
+                    // paddingHorizontal: 15,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 16,
+                      fontWeight: "500",
+                    }}
+                  >
+                    {data.secure}
+                  </Text>
+                </View>
+              </View>
             </View>
           )}
 
@@ -185,7 +212,7 @@ const Card = ({
             <Text
               style={
                 isOtherPage
-                  ? { fontSize: 20, fontWeight: "300", color: "#FFFFFF" }
+                  ? { fontSize: 17, fontWeight: "300", color: "#FFFFFF" }
                   : { fontSize: 16, fontWeight: "300", color: "#FFFFFF" }
               }
             >
@@ -224,7 +251,7 @@ const Card = ({
           </View>
         </View>
       </TouchableOpacity>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -244,5 +271,14 @@ const styles = StyleSheet.create({
   cardBorder: {
     paddingHorizontal: 30,
     marginTop: 40,
+  },
+  fadingContainer: {
+    position: "absolute",
+    width: "20%",
+    height: "70%",
+    borderRadius: 10,
+    backgroundColor: "black",
+    zIndex: 9,
+    left: 15,
   },
 });

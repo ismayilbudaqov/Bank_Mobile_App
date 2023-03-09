@@ -1,3 +1,4 @@
+//REACT NATIVE IMPORTS**
 import {
   Image,
   SafeAreaView,
@@ -10,18 +11,22 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
-import Svg, { Circle, Rect } from "react-native-svg";
+
+//REACT IMPORTS**
 import React, { useState, useEffect, useRef } from "react";
+
+//COMPONENTS IMPORTS**
 import Cards from "../components/Card/Card";
 import Sections from "../components/Sections/Sections";
 import Header from "../components/Header/Header";
+
+//HELPER FUNCTIONS ,LIBRARIES AND IMAGES**
+import { PanGestureHandler } from "react-native-gesture-handler";
 import { analize, calendar, document, collect, swipe } from "../assets/icons";
 import { paypal, ball, youtube, amazon } from "../assets/images";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Analyze from "./Analyze";
+import { Ionicons } from "@expo/vector-icons";
 import { getSize } from "../utils/helper";
-import SwipeView from "react-native-vertical-swipe-view";
+
 const listData = [
   {
     name: "Dribble",
@@ -153,8 +158,8 @@ const { width, height } = getSize();
 const HomeScreen = ({ navigation }) => {
   const animationHeight = useRef(new Animated.Value(150)).current;
   const [selected, setSelected] = useState(null);
-  const [ListPosition, setListPosition] = useState(0);
   const [scrolling, setScrolling] = useState(false);
+  // const [border, setBorder] = useState(100);
 
   const setAnimatedHeight = (height) => {
     Animated.timing(animationHeight, {
@@ -179,26 +184,27 @@ const HomeScreen = ({ navigation }) => {
     const { velocityY } = nativeEvent || {};
     const height = animationHeight.__getValue();
     if (velocityY < 0 && height == 150) {
-      // setListPosition(Math.abs(y) + ListPosition);
       setAnimatedHeight(450);
     } else if (velocityY > 0 && height == 450) {
       setAnimatedHeight(150);
-      // setListPosition(ListPosition - (y - 200));
     }
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#000040", flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
       <View
-        style={{ width: "100%", justifyContent: "center", alignSelf: "center" }}
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignSelf: "center",
+        }}
       >
         <View style={{ paddingHorizontal: 30 }}>
           <Header />
         </View>
-
         <ScrollView
           style={{
-            height: height <= 667 ? 265 : 280,
+            height: height <= 667 ? 255 : 265,
             width: "100%",
           }}
           showsHorizontalScrollIndicator={false}
@@ -212,10 +218,11 @@ const HomeScreen = ({ navigation }) => {
             />
           ))}
         </ScrollView>
+
         <View style={styles.sectionsBox}>
           <Sections
-            width={width <= 375 ? 70 : 75}
-            height={height <= 667 ? 70 : 75}
+            width={width <= 375 ? 70 : 73}
+            height={height <= 667 ? 70 : 73}
             backgroundColor={"#189090"}
             borderRadius={25}
             image={analize}
@@ -223,17 +230,17 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("Analyze")}
           />
           <Sections
-            width={width <= 375 ? 70 : 75}
-            height={height <= 667 ? 70 : 75}
+            width={width <= 375 ? 70 : 73}
+            height={height <= 667 ? 70 : 73}
             backgroundColor={"#3c5a45"}
             borderRadius={25}
             image={calendar}
             text={"Təqvim"}
           />
-          <Ionicons name="" size={32} color="green" />
+
           <Sections
-            width={width <= 375 ? 70 : 75}
-            height={height <= 667 ? 70 : 75}
+            width={width <= 375 ? 70 : 73}
+            height={height <= 667 ? 70 : 73}
             backgroundColor={"#acac47"}
             borderRadius={25}
             image={document}
@@ -241,8 +248,8 @@ const HomeScreen = ({ navigation }) => {
           />
 
           <Sections
-            width={width <= 375 ? 70 : 75}
-            height={height <= 667 ? 70 : 75}
+            width={width <= 375 ? 70 : 73}
+            height={height <= 667 ? 70 : 73}
             backgroundColor={"#a06343"}
             borderRadius={25}
             image={collect}
@@ -254,21 +261,28 @@ const HomeScreen = ({ navigation }) => {
         style={{
           position: "absolute",
           width: "100%",
-          bottom: 0,
+          bottom: 30,
+          paddingHorizontal: 5,
         }}
       >
         <PanGestureHandler onGestureEvent={swiping}>
-          <Animated.View style={{ height: animationHeight }}>
+          <Animated.View
+            style={{
+              height: animationHeight,
+            }}
+          >
             <ScrollView
               showsVerticalScrollIndicator={false}
               scrollEnabled={scrolling}
               style={{
                 paddingHorizontal: 30,
                 width: "100%",
-                backgroundColor: "#6930c3",
-                borderTopLeftRadius: "30%",
-                borderTopRightRadius: "30%",
+                backgroundColor: "gray",
+                borderTopLeftRadius: 40,
+                borderTopRightRadius: 40,
                 height: "100%",
+                borderBottomLeftRadius: 100,
+                borderBottomRightRadius: 100,
               }}
               scrollEventThrottle={16}
               onScroll={(e) => {
@@ -277,8 +291,24 @@ const HomeScreen = ({ navigation }) => {
                 }
               }}
             >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 30,
+                }}
+              >
+                {scrolling ? (
+                  <Ionicons name="ios-chevron-down" size={32} color="white" />
+                ) : (
+                  <Ionicons
+                    name="ios-chevron-up-outline"
+                    size={32}
+                    color="white"
+                  />
+                )}
+              </View>
               <View style={styles.viewBox}>
-                {/* <Image source={swipe}/> */}
                 <Text style={styles.transac}>Əməliyyatlar</Text>
                 <TouchableOpacity>
                   <Text style={styles.viewAll}>Hamısına baxın</Text>
@@ -329,20 +359,19 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   sectionsBox: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignSelf: "center",
     paddingHorizontal: 30,
     width: "100%",
-    // backgroundColor: "red",
+    justifyContent: "space-between",
+    alignSelf: "center",
   },
 
   ballBox: {
-    width: width <= 375 ? 50 : 55,
-    height: width <= 375 ? 50 : 55,
+    width: 50,
+    height: 50,
   },
   drible: {
     color: "white",
-    fontSize: width <= 375 ? 16 : 18,
+    fontSize: 16,
     fontWeight: "500",
     marginBottom: 4,
   },
@@ -355,7 +384,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: width <= 375 ? 130 : 135,
+    width: 130,
   },
   dribleSecond: {
     fontSize: 16,
@@ -366,12 +395,11 @@ const styles = StyleSheet.create({
   viewBox: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 10,
-    paddingHorizontal: 30,
   },
   transac: {
-    fontSize: width <= 375 ? 17 : 20,
+    fontSize: 17,
     fontWeight: "600",
     color: "white",
   },

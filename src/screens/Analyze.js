@@ -1,3 +1,4 @@
+//REACT NATIVE IMPORTS**
 import {
   StyleSheet,
   Text,
@@ -8,12 +9,17 @@ import {
   Image,
   Animated,
 } from "react-native";
+//REACT IMPORTS**
 import React, { useState, useEffect, useRef } from "react";
-import Andata from "../components/Andata/Andata";
+//HELPER FUNCTIONS AND IMAGES  IMPORTS **
+import { Ionicons } from "@expo/vector-icons";
 import { paypal, ball, youtube, amazon } from "../assets/images";
 import { getSize } from "../utils/helper";
+//LIBRARIY IMPORTS**
 import { PanGestureHandler } from "react-native-gesture-handler";
-import Icon from "react-native-vector-icons/FontAwesome5";
+
+//COMPONENTS IMPORTS**
+import CustomPieChart from "../components/PieChart/PieChart";
 
 const { width, height } = getSize();
 
@@ -168,28 +174,15 @@ const Analyze = ({}) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000040" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={{ paddingHorizontal: 30 }}>
-        <Andata />
-
-        <View style={styles.totalBox}>
-          <Text style={styles.total}>Total Balans</Text>
-          <Text style={styles.balance}>1.924,35 ₼</Text>
-        </View>
-        {/* <View style={styles.viewBox}>
-          <Text style={styles.transac}>Əməliyyat</Text>
-          <TouchableOpacity>
-            <Text style={styles.viewAll}>Hamısına baxın</Text>
-          </TouchableOpacity>
-        </View> */}
+        {/* <CustomPieChart /> */}
+        <View style={styles.totalBox}></View>
       </View>
       <View
         style={{
           position: "absolute",
-          // width: width <= 375 ? 375 : 390,
-          // bottom: width <= 375 ? -230 :-330,
           width: "100%",
-
           bottom: 0,
         }}
       >
@@ -201,9 +194,9 @@ const Analyze = ({}) => {
               style={{
                 paddingHorizontal: 30,
                 width: "100%",
-                backgroundColor: "#6930c3",
-                borderTopLeftRadius: "30%",
-                borderTopRightRadius: "30%",
+                backgroundColor: "gray",
+                borderTopLeftRadius: 40,
+                borderTopRightRadius: 40,
                 height: "100%",
               }}
               scrollEventThrottle={16}
@@ -213,6 +206,19 @@ const Analyze = ({}) => {
                 }
               }}
             >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 30,
+                }}
+              >
+                <Ionicons
+                  name="ios-chevron-up-outline"
+                  size={32}
+                  color="white"
+                />
+              </View>
               {listData.map((item, index) => (
                 <TouchableOpacity
                   style={{
@@ -257,7 +263,7 @@ export default Analyze;
 
 const styles = StyleSheet.create({
   total: {
-    color: "#B9B2C4",
+    color: "black",
     fontSize: 16,
     fontWeight: "400",
     marginBottom: 8,
@@ -265,7 +271,7 @@ const styles = StyleSheet.create({
   balance: {
     fontSize: 32,
     fontWeight: "500",
-    color: "white",
+    color: "black",
   },
   totalBox: {
     alignItems: "center",
