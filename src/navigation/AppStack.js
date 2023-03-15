@@ -147,17 +147,22 @@ const Tabs = () => {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         headerShown: false,
-        tabBarLabelStyle: { marginBottom: 5 },
+        tabBarLabelStyle: {},
+
         tabBarStyle: {
-          backgroundColor: "#000000",
-          borderRadius: 100,
-          marginLeft: 5,
-          marginRight: 5,
-          height: 55,
-          position: "absolute",
-          bottom: 30,
+          height: 70,
+          backgroundColor: "black",
+          // borderRadius: 100,
+          // borderTopLeftRadius:50,
+          // borderTopRightRadius:50
+          // marginLeft: 5,
+          // marginRight: 5,
+          // height: 55,
+          // position: "absolute",
+          // bottom: 30,
         },
         tabBarActiveTintColor: "#49BAFF",
+
         tabBarInactiveTintColor: "white",
       })}
     >

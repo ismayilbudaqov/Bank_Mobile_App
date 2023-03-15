@@ -261,7 +261,7 @@ const HomeScreen = ({ navigation }) => {
         style={{
           position: "absolute",
           width: "100%",
-          bottom: 30,
+          bottom: 0,
           paddingHorizontal: 5,
         }}
       >
@@ -281,8 +281,8 @@ const HomeScreen = ({ navigation }) => {
                 borderTopLeftRadius: 40,
                 borderTopRightRadius: 40,
                 height: "100%",
-                borderBottomLeftRadius: 100,
-                borderBottomRightRadius: 100,
+                // borderBottomLeftRadius: 100,
+                // borderBottomRightRadius: 100,
               }}
               scrollEventThrottle={16}
               onScroll={(e) => {

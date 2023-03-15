@@ -6,7 +6,7 @@ import {
   View,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -16,8 +16,10 @@ import app from "../config/firebase";
 import Icon from "../assets/images/login.png";
 
 const SignIn = () => {
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = useState("");
   const { handleLogin } = useAuth();
 
   const navigation = useNavigation();
@@ -27,7 +29,7 @@ const SignIn = () => {
   const handleSubmit = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        userCredential.user.displayName = email.split("@")[0];
+        auth.currentUser.displayName = email.split("@")[0];
 
         const data = {
           user: userCredential.user,
@@ -35,8 +37,9 @@ const SignIn = () => {
         };
         handleLogin(data);
       })
+
       .catch((error) => {
-        console.log(error.message);
+        setError(error.message);
         const errorCode = error.code;
         const errorMessage = error.message;
       });
@@ -59,7 +62,13 @@ const SignIn = () => {
       </View>
       <View>
         <GlobalInput value={email} onChangeText={setEmail} label={"Email"} />
+        {error ? (
+          <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>
+        ) : (
+          ""
+        )}
       </View>
+
       <View style={styles.passwordInput}>
         <GlobalInput
           label={"Sifre"}
@@ -67,6 +76,11 @@ const SignIn = () => {
           onChangeText={setPassword}
           value={password}
         />
+        {error ? (
+          <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>
+        ) : (
+          ""
+        )}
       </View>
       <View style={styles.BtnArea}>
         <TouchableOpacity

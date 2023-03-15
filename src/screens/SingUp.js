@@ -14,10 +14,12 @@ import GlobalInput from "../components/GlobalInput/GlobalInput";
 
 import Icon from "../assets/images/register.png";
 import Google from "../assets/icons/google.png";
+
 import Facebook from "../assets/icons/fb.png";
 import Apple from "../assets/icons/apple.png";
 
 const SingUp = () => {
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -51,6 +53,9 @@ const SingUp = () => {
           style={{ width: "100%", height: "100%", resizeMode: "contain" }}
           source={Icon}
         />
+      </View>
+      <View>
+        <GlobalInput value={name} onChangeText={setName} label={"Ad"} />
       </View>
       <View>
         <GlobalInput value={email} onChangeText={setEmail} label={"Email"} />
